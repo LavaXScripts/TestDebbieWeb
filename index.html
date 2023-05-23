@@ -62,6 +62,18 @@
       margin-left: 5px;
     }
   </style>
+  <script>
+    // JavaScript to handle toggle behavior
+    window.addEventListener('DOMContentLoaded', function() {
+      var dropdowns = document.querySelectorAll('.dropdown');
+      dropdowns.forEach(function(dropdown) {
+        var button = dropdown.querySelector('.dropbtn');
+        button.addEventListener('click', function() {
+          dropdown.classList.toggle('active');
+        });
+      });
+    });
+  </script>
 </head>
 <body>
   <!-- Navigation Bar -->
