@@ -1,113 +1,80 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dropdown Navigation Bar</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    .navbar {
-      background-color: #4CAF50; /* Green color */
-      overflow: hidden;
-    }
-
-    .navbar .dropdown {
-      float: left;
-      overflow: hidden;
-    }
-
-    .navbar .dropdown .dropbtn {
-      font-size: 16px;
-      border: none;
-      outline: none;
-      color: #f2f2f2;
-      padding: 14px 16px;
-      background-color: inherit;
-      margin: 0;
-    }
-
-    .navbar .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #f9f9f9;
-      min-width: 160px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      z-index: 1;
-    }
-
-    .navbar .dropdown-content a {
-      float: none;
-      color: black;
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
-      text-align: left;
-    }
-
-    .navbar .dropdown-content a:hover {
-      background-color: #ddd;
-    }
-
-    .navbar .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    .navbar .dropdown .dropbtn::after {
-      content: "\25BC";
-      font-size: 12px;
-      color: #f2f2f2;
-      margin-left: 5px;
-    }
-  </style>
-  <script>
-    // JavaScript to handle toggle behavior
-    window.addEventListener('DOMContentLoaded', function() {
-      var dropdowns = document.querySelectorAll('.dropdown');
-      dropdowns.forEach(function(dropdown) {
-        var button = dropdown.querySelector('.dropbtn');
-        button.addEventListener('click', function() {
-          dropdown.classList.toggle('active');
-        });
-      });
-    });
-  </script>
+    <title>Sign Up Page</title>
+    <style>
+        .container {
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .container input[type="text"],
+        .container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .container input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-  <!-- Navigation Bar -->
-  <div class="navbar">
-    <div class="dropdown">
-      <button class="dropbtn">Button 1</button>
-      <div class="dropdown-content">
-        <a href="#">Option 1</a>
-        <a href="#">Option 2</a>
-        <a href="#">Option 3</a>
-      </div>
+    <div class="container">
+        <h2>Sign Up Page</h2>
+        <form id="signup-form">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="submit" value="Sign Up">
+        </form>
     </div>
-    <div class="dropdown">
-      <button class="dropbtn">Button 2</button>
-      <div class="dropdown-content">
-        <a href="#">Option 1</a>
-        <a href="#">Option 2</a>
-        <a href="#">Option 3</a>
-      </div>
-    </div>
-    <div class="dropdown">
-      <button class="dropbtn">Button 3</button>
-      <div class="dropdown-content">
-        <a href="#">Option 1</a>
-        <a href="#">Option 2</a>
-        <a href="#">Option 3</a>
-      </div>
-    </div>
-  </div>
 
-  <!-- Page Content -->
-  <div class="content">
-    <h1>Welcome to My Website</h1>
-    <p>This is a sample website with a dropdown navigation bar.</p>
-  </div>
+    <script>
+        // Check if the browser supports localStorage
+        if (typeof(Storage) !== "undefined") {
+            // Retrieve saved username and password if available
+            var savedUsername = localStorage.getItem("username");
+            var savedPassword = localStorage.getItem("password");
+
+            // Fill the input fields if saved values exist
+            if (savedUsername && savedPassword) {
+                document.getElementById("username").value = savedUsername;
+                document.getElementById("password").value = savedPassword;
+            }
+        }
+
+        // Add an event listener to the form
+        document.getElementById("signup-form").addEventListener("submit", function(event) {
+            // Prevent the form from submitting
+            event.preventDefault();
+
+            // Get the username and password values
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            // Save the username and password in localStorage
+            if (typeof(Storage) !== "undefined") {
+                localStorage.setItem("username", username);
+                localStorage.setItem("password", password);
+            }
+
+            // Optional: Display a success message
+            alert("Sign up successful!");
+
+            // Clear the input fields
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+        });
+    </script>
 </body>
 </html>
