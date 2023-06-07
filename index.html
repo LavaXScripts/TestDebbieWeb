@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Sign Up Page</title>
+    <title>Sign Up and Login Page</title>
     <style>
         .container {
             width: 300px;
@@ -27,54 +27,108 @@
             border-radius: 3px;
             cursor: pointer;
         }
+        #login-form {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Sign Up Page</h2>
+    <button onclick="showSignUpForm()">Sign Up</button>
+    <button onclick="showLoginForm()">Login</button>
+
+    <div class="container" id="signup-container">
+        <h2>Sign Up</h2>
         <form id="signup-form">
-            <input type="text" id="username" placeholder="Username" required>
-            <input type="password" id="password" placeholder="Password" required>
+            <input type="text" id="signup-username" placeholder="Username" required>
+            <input type="password" id="signup-password" placeholder="Password" required>
             <input type="submit" value="Sign Up">
         </form>
     </div>
 
-    <script>
-        // Check if the browser supports localStorage
-        if (typeof(Storage) !== "undefined") {
-            // Retrieve saved username and password if available
-            var savedUsername = localStorage.getItem("username");
-            var savedPassword = localStorage.getItem("password");
+    <div class="container" id="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <input type="text" id="login-username" placeholder="Username" required>
+            <input type="password" id="login-password" placeholder="Password" required>
+            <input type="submit" value="Login">
+        </form>
+    </div>
 
-            // Fill the input fields if saved values exist
-            if (savedUsername && savedPassword) {
-                document.getElementById("username").value = savedUsername;
-                document.getElementById("password").value = savedPassword;
-            }
+    <script>
+        // Show the sign-up form and hide the login form
+        function showSignUpForm() {
+            document.getElementById("signup-container").style.display = "block";
+            document.getElementById("login-container").style.display = "none";
         }
 
-        // Add an event listener to the form
-        document.getElementById("signup-form").addEventListener("submit", function(event) {
-            // Prevent the form from submitting
-            event.preventDefault();
+        // Show the login form and hide the sign-up form
+        function showLoginForm() {
+            document.getElementById("signup-container").style.display = "none";
+            document.getElementById("login-container").style.display = "block";
+        }
 
-            // Get the username and password values
-            var username = document.getElementById("username").value;
-            var password = document.getElementById("password").value;
+        // Check if the browser supports localStorage
+        if (typeof(Storage) !== "undefined") {
+            // Retrieve saved accounts if available
+            var accounts = JSON.parse(localStorage.getItem("accounts")) || [];
 
-            // Save the username and password in localStorage
-            if (typeof(Storage) !== "undefined") {
-                localStorage.setItem("username", username);
-                localStorage.setItem("password", password);
-            }
+            // Add an event listener to the sign-up form
+            document.getElementById("signup-form").addEventListener("submit", function(event) {
+                // Prevent the form from submitting
+                event.preventDefault();
 
-            // Optional: Display a success message
-            alert("Sign up successful!");
+                // Get the username and password values
+                var username = document.getElementById("signup-username").value;
+                var password = document.getElementById("signup-password").value;
 
-            // Clear the input fields
-            document.getElementById("username").value = "";
-            document.getElementById("password").value = "";
-        });
+                // Check if the username is already taken
+                if (accounts.some(account => account.username === username)) {
+                    alert("Username already exists. Please choose a different username.");
+                    return;
+                }
+
+                // Create a new account object
+                var account = {
+                    username: username,
+                    password: password
+                };
+
+                // Save the new account in localStorage
+                accounts.push(account);
+                localStorage.setItem("accounts", JSON.stringify(accounts));
+
+                // Optional: Display a success message
+                alert("Sign up successful!");
+
+                // Clear the input fields
+                document.getElementById("signup-username").value = "";
+                document.getElementById("signup-password").value = "";
+            });
+
+            // Add an event listener to the login form
+            document.getElementById("login-form").addEventListener("submit", function(event) {
+                // Prevent the form from submitting
+                event.preventDefault();
+
+                // Get the username and password values
+                var username = document.getElementById("login-username").value;
+                var password = document.getElementById("login-password").value;
+
+                // Check if the entered username and password match any account
+                var matchedAccount = accounts.find(account => account.username === username && account.password === password);
+
+                // Display a success or error message based on the result
+                if (matchedAccount) {
+                    alert("Login successful!");
+                } else {
+                    alert("Invalid username or password.");
+                }
+
+                // Clear the input fields
+                document.getElementById("login-username").value = "";
+                document.getElementById("login-password").value = "";
+            });
+        }
     </script>
 </body>
 </html>
